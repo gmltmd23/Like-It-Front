@@ -4,32 +4,34 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider, Container, Typography, 
             Box, Grid, TextField, CssBaseline, Button, Avatar, FormHelperText } from '@mui/material/';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function Login() {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const heyNavi = useNavigate();
 
     const handlePost = async (data) => {
         const baseUrl = 'http://localhost:8080'
-        const {email, password, name} = data;
-        const postData = {email, password, name};
+        const {email, password} = data;
+        const postData = {email, password};
 
         await axios
             .post(baseUrl + '/user/login', postData)
             .then((response) => {
-                alert("회원가입에 성공하였습니다.");
-                console.log(response, "회원가입 성공!!");
+                alert("로그인에 성공하였습니다.");
+                heyNavi("/");
             })
             .catch((error) => {
-                alert("회원가입에 실패하였습니다.");
-                console.log(error, "회원가입 실패");
+                alert("존재하지 않는 회원정보 입니다.");
             })
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        let okayCount = 0;
         const receivedData = new FormData(event.currentTarget);
         const userData = {
             email: receivedData.get('email'),
@@ -38,16 +40,25 @@ export default function Login() {
         const { email, password } = userData;
 
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if(!emailRegex.test(email))
+        if(!emailRegex.test(email)) {
             setEmailError("이메일 형식에 맞지 않습니다.");
-        else
+        }
+        else {
+            okayCount++;
             setEmailError("");
+        }
 
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-        if(!passwordRegex.test(password))
+        if(!passwordRegex.test(password)) {
             setPasswordError("패스워드는 숫자+영문자+특수문자 조합으로 8자리 이상이어야 합니다.");
-        else
+        }
+        else {
+            okayCount++;
             setPasswordError("");
+        }
+
+        if(okayCount === 2)
+            handlePost(userData);
     };
 
     return (

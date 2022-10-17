@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { useState, useNavigate } from 'react';
+import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider, Container, Typography, 
             Box, Grid, Checkbox, FormControlLabel,
             TextField, CssBaseline, Button, Avatar, FormHelperText } from '@mui/material/';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -14,6 +15,7 @@ export default function SignUp() {
     const [isSamePassword, setIsSamePassword] = useState('');
     const [nameError, setNameError] = useState('');
     const [isAgree, setIsAgree] = useState(false);
+    const navigate = useNavigate();
 
     const handleAgree = (event) => {
         setIsAgree(event.target.checked);
@@ -28,11 +30,10 @@ export default function SignUp() {
             .post(baseUrl + '/user/signup', postData)
             .then((response) => {
                 alert("회원가입에 성공하였습니다.");
-                console.log(response, "회원가입 성공!!");
+                navigate("/login");
             })
             .catch((error) => {
                 alert("회원가입에 실패하였습니다.");
-                console.log(error, "회원가입 실패");
             })
     }
 
