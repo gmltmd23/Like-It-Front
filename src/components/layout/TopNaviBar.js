@@ -23,7 +23,7 @@ export default function TopNaviBar(props) {
                 LIKE IT
             </Typography>
             <Button color="inherit" onClick={() => navigate(data.home)}>Home</Button>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" onClick={() => navigate(data.login)}>Login</Button>
             <Button color="inherit" onClick={() => navigate(data.signup)}>SIGN UP</Button>
             </Toolbar>
         </AppBar>

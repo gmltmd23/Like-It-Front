@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useNavigate } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider, Container, Typography, 
             Box, Grid, Checkbox, FormControlLabel,
@@ -91,7 +91,6 @@ export default function SignUp() {
         }
 
         if(okayCount === 5) {
-            alert(JSON.stringify(userData))
             handlePost(userData);
         }
     };
